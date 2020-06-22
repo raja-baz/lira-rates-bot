@@ -32,7 +32,7 @@ def render_rates():
     now = datetime.datetime.now()
     then = datetime.datetime.fromtimestamp(info['ts']/1000)
     if now > then:
-        dt = (now - then).seconds
+        dt = int((now - then).total_seconds())
     else:
         dt = 0
         
