@@ -29,7 +29,13 @@ def render_rates():
     text += "\n\n"
 
     text += "Source: https://lirarate.com\n"
-    dt = datetime.datetime.now() - datetime.datetime.fromtimestamp(info['ts']/1000)
-    text += "Last update: %s ago" % time_ago(dt.seconds * 1000)
+    now = datetime.datetime.now()
+    then = datetime.datetime.fromtimestamp(info['ts']/1000)
+    if now > then:
+        dt = (now - then).seconds
+    else:
+        dt = 0
+        
+    text += "Last update: %s ago" % time_ago(dt * 1000)
 
     return text
