@@ -7,9 +7,16 @@ logging.basicConfig(level=logging.DEBUG,
 from util import render_rates, get_token
 
 from telegram.ext import Updater, CommandHandler
+import datetime
 
+last_rates_time = None
 def print_rates(update, context):
-    update.message.reply_text(render_rates())
+    global last_rates_time
+
+    now = datetime.datetime.now()
+    if last_rates_time is None or (now - last_rates_time).total_seconds() > 3600:
+        update.message.reply_text(render_rates())
+        last_rates_time = now
 
 TOKEN = get_token()
 
