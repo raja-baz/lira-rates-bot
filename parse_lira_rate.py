@@ -1,6 +1,13 @@
 import json
 import os
 import tempfile
+import sys
+
+old = None
+try:
+    old = json.load(open('last_rates.json'))
+except:
+    pass
 
 rates = json.loads(input())
 
@@ -26,3 +33,8 @@ os.fsync(f.fileno())
 f.close()
 os.rename(tmpFile, 'last_rates.json')
 
+if old is None or old['ts'] != ts:
+    print("Rates changed!")
+    sys.exit(0)
+    
+sys.exit(1)
