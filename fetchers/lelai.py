@@ -13,8 +13,8 @@ def parse_line(line):
     date_string = line[0] + " " + line[1]
     date = dateparser.parse(date_string, settings = {'TIMEZONE': 'EEST', "TO_TIMEZONE": local_tz.tzname(datetime.datetime.now())})
     ts = int((date - datetime.datetime.fromtimestamp(0)).total_seconds())
-    br = int(line[10].replace(",", ""))
-    sr = int(line[11].replace(",", ""))
+    br = int(line[11].replace(",", ""))
+    sr = int(line[10].replace(",", ""))
     return ts, br, sr
         
 
