@@ -26,7 +26,7 @@ def rate_limit(chat):
 def print_rates(update, context):
     if rate_limit(update.effective_chat):
         return
-    update.message.reply_text("Latest rates:\n\n" + render_rates())
+    update.message.reply_text("Latest rates:\n\n" + render_rates(), disable_web_page_preview=True)
 
 TOKEN = get_token()
 

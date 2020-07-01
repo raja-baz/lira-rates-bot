@@ -11,4 +11,4 @@ bot = Bot(get_token())
 text = "Rates updated:\n\n" + render_rates()
 
 for l in open('channels').readlines():
-    bot.send_message("@" + l, text)
+    bot.send_message("@" + l, text, disable_web_page_preview=True)
