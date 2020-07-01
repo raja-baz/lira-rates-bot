@@ -14,7 +14,10 @@ if name in ignored:
 if not os.path.exists(f2):
     sys.exit(0)
 
-if json.load(open(f1))['ts'] != json.load(open(f2))['ts']:
-    sys.exit(0)
-
+d1 = json.load(open(f1))
+d2 = json.load(open(f2))
+for field in ('ts', 'buy', 'sell'):
+    if d1[field] != d2[field]:
+        sys.exit(0)
+        
 sys.exit(1)
