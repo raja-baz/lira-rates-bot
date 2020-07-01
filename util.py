@@ -59,3 +59,10 @@ def render_rates():
         text += render_single(source)
 
     return text
+
+def read_channels():
+    try:
+        return [int(x.strip()) for x in open('channels').readlines()]
+    except FileNotFoundError:
+        return []
+        
