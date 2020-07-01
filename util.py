@@ -29,16 +29,8 @@ def time_ago(seconds):
 
 def render_single(source):
     info = json.load(open('rates_out/' + source))
-    
-    now = datetime.datetime.now()
-    then = datetime.datetime.fromtimestamp(info['ts'])
-    if now > then:
-        dt = int((now - then).total_seconds())
-    else:
-        dt = 0
 
-
-    text = "%s (Last update: %s ago):\n" % (meta[source]['name'], time_ago(dt))
+    text = "%s (Last update: %s):\n" % (meta[source]['name'], info['time'])
     
     text +=  "Buy: " + str(info['buy'])
     if 'db' in info:

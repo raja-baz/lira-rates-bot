@@ -1,4 +1,5 @@
 import json
+import time
 
 rates = json.loads(input())
 
@@ -10,7 +11,8 @@ _, sr = last_sell
 
 ts = ts // 1000
 
-result = {'buy': br, 'sell': sr, 'ts': ts}
+
+result = {'buy': br, 'sell': sr, 'time': time.ctime(ts)}
 
 prev_buy = rates['buy'][-2]
 prev_sell = rates['sell'][-2]
