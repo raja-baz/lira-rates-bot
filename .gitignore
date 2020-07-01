@@ -2,3 +2,5 @@ token
 last_rates.json
 *.pyc
 channels
+rates_next/
+rates_out/
