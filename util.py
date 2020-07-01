@@ -10,7 +10,11 @@ meta = {
     'lelai': {
         "name": "LELAI",
         "site": "https://lebaneselira.org"
-    }
+    },
+    'businessnews': {
+        'name': "Business News",
+        'site': "http://www.businessnews.com.lb/"
+    },
 }
 
 ignored = ["lelai"]
