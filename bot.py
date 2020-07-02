@@ -14,6 +14,24 @@ import datetime
 
 last_rates_times = {}
 
+def get_chat_info(bot, chat_id):
+    chat = bot.getChat(chat_id)
+    if chat.type == 'private':
+        return str(chat.get_member(chat_id))
+    return str(chat)
+
+def list_subscribers(update, context):
+    if update.effective_chat.id != 907198901:
+        return
+
+    text = ""
+    for channel_id in read_channels():
+        if len(text) > 0:
+            text += "\n\n"
+        text += get_chat_info(context.bot, channel_id)
+
+    update.message.reply_text(text)
+
 def write_channels(channels):
     _, tmpFile = tempfile.mkstemp()
     f = open(tmpFile, 'w')
@@ -94,6 +112,7 @@ dp = updater.dispatcher
 dp.add_handler(CommandHandler('rates', print_rates))
 dp.add_handler(CommandHandler('sub', subscribe))
 dp.add_handler(CommandHandler('unsub', unsubscribe))
+dp.add_handler(CommandHandler('subscribers', list_subscribers))
 
 updater.start_polling()
 updater.idle()
