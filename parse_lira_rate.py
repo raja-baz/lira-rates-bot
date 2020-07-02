@@ -1,6 +1,11 @@
 import json
 import time
 
+# Make sure time are rendered as if we're in Lebanon
+import os
+os.environ['TZ'] = 'Asia/Beirut'
+time.tzset()
+
 rates = json.loads(input())
 
 last_buy = rates['buy'][-1]
