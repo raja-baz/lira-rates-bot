@@ -29,8 +29,12 @@ def list_subscribers(update, context):
         if len(text) > 0:
             text += "\n\n"
         text += get_chat_info(context.bot, channel_id)
+        if len(text) > 3000:
+            update.message.reply_text(text)
+            text = ""
 
-    update.message.reply_text(text)
+    if len(text) > 0:
+        update.message.reply_text(text)
 
 def write_channels(channels):
     _, tmpFile = tempfile.mkstemp()
