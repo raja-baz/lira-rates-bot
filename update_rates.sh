@@ -7,7 +7,7 @@ mkdir -p rates_next 2>/dev/null
 
 has_change=0
 
-has_change=$(
+changes=$(
     ls fetchers | while read script_name
     do
         source_name=$(echo $script_name | sed 's/\.[^.]*//')
@@ -22,16 +22,17 @@ has_change=$(
             if [[ $res == 0 ]]
             then
                 echo "Change detected on source: $source_name" >&2
-                echo "Change"
+                echo "$source_name"
             fi
         fi
     done
-)
+ )
 
-has_change=$(echo $has_change | grep Change | wc -l)
 
+
+changes=$(echo $changes | tr '\n' ',' | sed 's/,$//' | tr -d '\n')
 mv rates_next/* rates_out/
-if [[ "$has_change" -gt "0" ]]
+if [[ "$changes" != "" ]]
 then
-    python3 post_rate.py
+    python3 post_rate.py "$changes"
 fi

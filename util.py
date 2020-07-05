@@ -19,7 +19,8 @@ meta = {
     },
     'dollarmarket': {
         'name': 'Dollar Market',
-        'site': 'سوق الدولار mobile app'
+        'site': 'https://play.google.com/store/apps/details?id=com.usdmarketapp&hl=ar',
+        'site_text': 'سوق الدولار mobile app',
     }
 }
 
@@ -37,32 +38,49 @@ def time_ago(seconds):
         return str(seconds // 60) + " min"
     return str(seconds // 3600) + " hr"
 
-def render_single(source):
+
+def escape(s, chars):
+    for c in chars:
+        s = s.replace(c, "\\" + c)
+    return s
+
+def escape_markdown(s):
+    return escape(s, "().-+")
+
+def render_single(source, highlight=False):
     info = json.load(open('rates_out/' + source))
 
-    text = "%s (Last update: %s):\n" % (meta[source]['name'], info['time'])
+    m = meta[source]
+
+    text = "%s%s%s _(Last update: %s)_:\n" % ("*" if highlight else "", m['name'], "*" if highlight else "", info['time'])
     
     text +=  "Buy: " + str(info['buy'])
     if 'db' in info:
-        text += " (%s%d change over a period of: %s)" % ("+" if info['db'] > 0 else "", info['db'], time_ago(info['dts']))
+        text += " _(%s%d change over a period of: %s)_" % ("+" if info['db'] > 0 else "", info['db'], time_ago(info['dts']))
     text += "\n"
     
     text +=  "Sell: " + str(info['sell'])
     if 'ds' in info:
-        text += " (%s%d change over a period of: %s)" % ("+" if info['ds'] > 0 else "", info['ds'], time_ago(info['dts']))
+        text += " _(%s%d change over a period of: %s)_" % ("+" if info['ds'] > 0 else "", info['ds'], time_ago(info['dts']))
 
-    text += "\nSource: %s\n" % meta[source]['site']
+    text = escape_markdown(text)
+
+    site_link = m['site']
+    site_text = escape_markdown(m['site_text'] if 'site_text' in m else site_link)
+
+    text += "\nSource: [%s](%s)\n" % (site_text, site_link)
     
+    print(text)
     return text
 
-def render_rates():
+def render_rates(changed=[]):
     text = ""
     for source in sorted(os.listdir('rates_out')):
         if source in ignored:
             continue
         if len(text) > 0:
             text += "\n"
-        text += render_single(source)
+        text += render_single(source, source in changed)
 
     return text
 
