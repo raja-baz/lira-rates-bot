@@ -227,6 +227,9 @@ def rate_limit(chat):
     last_rates_times[chat.id] = now
     return False
 
+def start(update, context):
+    update.message.reply_text("Welcome. This bot monitors multiple sources for lira rate updates. Send /config to configure which sources you want to see. Send /sub or /unsub to subscribe or unsubscribe from getting notified when rates changed. Send /rates for latest rates on record")
+
 def print_rates(update, context):
     if rate_limit(update.effective_chat):
         return
@@ -248,6 +251,7 @@ dp.add_handler(CommandHandler('unsub', unsubscribe))
 dp.add_handler(CommandHandler('subscribers', list_subscribers))
 dp.add_handler(CommandHandler('config', configure))
 dp.add_handler(CallbackQueryHandler(configure_options))
+dp.add_handler(CommandHandler('start', start))
 
 updater.start_polling()
 updater.idle()
