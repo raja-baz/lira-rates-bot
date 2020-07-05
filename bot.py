@@ -166,6 +166,8 @@ cached_button_data = {}
 button_data_lookup = []
 
 def configure_options(update, context):
+    if mod_protect(update):
+        return
     query = update.callback_query
     query.answer()
 
