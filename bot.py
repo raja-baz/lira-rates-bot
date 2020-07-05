@@ -10,8 +10,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-from util import render_rates, get_token, read_channels, get_global_config, meta
+from util import render_rates, get_token, read_channels, get_global_config, meta, set_config
 
+import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
@@ -135,7 +136,7 @@ def configure_next_source(chat_id, text_func, so_far):
             summary += " notify: %s" % str(config['notify'])
     
     text_func("Done! Summary:\n\n%s" % summary)
-    global_config[chat_id] = so_far
+    set_config(chat_id, so_far)
     atomic_write('config', json.dumps(global_config))
     _subscribe(chat_id)
     
@@ -229,7 +230,7 @@ def rate_limit(chat):
 def print_rates(update, context):
     if rate_limit(update.effective_chat):
         return
-    update.message.reply_text("*Latest rates*:\n\n" + render_rates(), disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    update.message.reply_text("*Latest rates*:\n\n" + render_rates(update.effective_chat.id), disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 TOKEN = get_token()
 

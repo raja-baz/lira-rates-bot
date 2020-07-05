@@ -46,6 +46,9 @@ def get_global_config():
             _config = {}
     return _config
 
+def set_config(chat_id, config):
+    get_global_config()[str(chat_id)] = config
+
 def get_config(chat_id):
     config = get_global_config()
     return config[str(chat_id)] if str(chat_id) in config else {}
