@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 import datetime
 import os
@@ -15,6 +17,10 @@ meta = {
         'name': "Business News",
         'site': "http://www.businessnews.com.lb/"
     },
+    'dollarmarket': {
+        'name': 'Dollar Market',
+        'site': 'سوق الدولار mobile app'
+    }
 }
 
 ignored = ["lelai"]
