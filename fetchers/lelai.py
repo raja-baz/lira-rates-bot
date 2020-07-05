@@ -25,9 +25,13 @@ latest = [x.text for x in tree.xpath('//tbody/tr[4]/td')]
 previous = [x.text for x in tree.xpath('//tbody/tr[5]/td')]
 
 ts, br, sr, date_string = parse_line(latest)
-pts, pbr, psr, _ = parse_line(previous)
-
-result = {'buy': br, 'sell': sr, 'time': date_string,
-          'db': br - pbr, 'ds': sr - psr, 'dts': ts - pts}
+result = {'buy': br, 'sell': sr, 'time': date_string}
+try:
+    pts, pbr, psr, _ = parse_line(previous)
+    result['db'] = br - pbr
+    result['ds'] = sr - psr
+    result['dts'] = ts - pts
+except:
+    pass
 
 print(json.dumps(result))
