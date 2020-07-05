@@ -26,4 +26,7 @@ for channel_id in read_channels():
     if not found:
         continue
     text = "*Rates updated*:\n\n" + render_rates(channel_id, changed)
-    bot.send_message(channel_id, text, disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    try:
+        bot.send_message(channel_id, text, disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    except:
+        pass

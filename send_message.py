@@ -16,4 +16,7 @@ else:
     sys.exit(1)
 
 for channel_id in read_channels():
-    bot.send_message(channel_id, message)
+    try:
+        bot.send_message(channel_id, message)
+    except:
+        pass
