@@ -8,7 +8,7 @@ mkdir -p rates_next 2>/dev/null
 has_change=0
 
 changes=$(
-    ls fetchers | while read script_name
+    (ls fetchers | while read script_name
     do
         source_name=$(echo $script_name | sed 's/\.[^.]*//')
         "./fetchers/$script_name" > rates_next/"$source_name"
@@ -25,12 +25,11 @@ changes=$(
                 echo "$source_name"
             fi
         fi
-    done
- )
+    done) | tr '\n' ',' | sed 's/,$//'
+       )
 
+echo $changes
 
-
-changes=$(echo $changes | tr '\n' ',' | sed 's/,$//' | tr -d '\n')
 mv rates_next/* rates_out/
 if [[ "$changes" != "" ]]
 then
