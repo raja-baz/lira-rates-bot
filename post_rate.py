@@ -19,7 +19,9 @@ for channel_id in read_channels():
     c = get_config(channel_id)
     found = False
     for u in changed:
-        notify = c[u]['notify'] if u in c else meta[u]['default_notify']
+        notify = meta[u]['default_notify']
+        if u in c:
+            notify = c[u]['sub'] and c[u]['notify']
         if notify:
             found = True
             break
