@@ -121,7 +121,7 @@ def configure_next_source(chat_id, text_func, so_far):
             ("No", {"question": "show", "answer": "no", "so_far": so_far, "subject": key}),
         ]
         markup = create_keyboard(options)
-        text_func("%s: %s\n\nWould you like to receive see rates from %s? Default: %s" % (m['name'], m['desc'], m['name'], str(m['default_enabled'])),
+        text_func("%s: %s\n\nWould you like to see rates from %s? Default: %s" % (m['name'], m['desc'], m['name'], str(m['default_enabled'])),
                   reply_markup = markup)
         return
 
