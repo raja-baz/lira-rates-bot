@@ -43,8 +43,9 @@ def list_subscribers(update, context):
     if update.effective_chat.id != 907198901:
         return
 
-    text = ""
-    for channel_id in read_channels():
+    channels = read_channels()
+    text = "%d Subscribers:" % len(channels)
+    for channel_id in channels:
         if len(text) > 0:
             text += "\n\n"
         text += get_chat_info(context.bot, channel_id)
