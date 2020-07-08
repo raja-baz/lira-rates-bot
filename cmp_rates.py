@@ -11,7 +11,10 @@ if not os.path.exists(f2):
 
 d1 = json.load(open(f1))
 d2 = json.load(open(f2))
-for field in ('time', 'buy', 'sell'):
+fields = ['time', 'buy', 'sell']
+if name == 'dollarmarket':
+    fields.remove('time')
+for field in fields:
     if field not in d1 or field not in d2:
         if field in d1 or field in d2:
             sys.exit(0)
