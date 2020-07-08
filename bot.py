@@ -24,8 +24,20 @@ global_config = get_global_config()
 def get_chat_info(bot, chat_id):
     chat = bot.getChat(chat_id)
     if chat.type == 'private':
-        return str(chat.get_member(chat_id))
-    return str(chat)
+        text = "id: %d" % chat_id
+        user = chat.get_member(chat_id).user
+        if user.is_bot:
+            text += " BOT!"
+        if user.first_name:
+            text += " first name: " + user.first_name
+        if user.last_name:
+            text += " last name: " + user.last_name
+        if user.username:
+            text += " username: @" + user.username
+
+        return text
+
+    return "id: %d type: %s name: @%s title: %s" % (chat_id, chat.type, chat.username, chat.title)
 
 def list_subscribers(update, context):
     if update.effective_chat.id != 907198901:
