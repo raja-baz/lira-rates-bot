@@ -12,13 +12,6 @@ meta = {
         'default_enabled': True,
         'default_notify': True
     },
-    'lelai': {
-        "name": "LELAI Abdellatif",
-        "site": "https://lelai-abdellatif.online/",
-        'desc': "Run by a dictator, updates whenever said dictator likes the rates. Stops updating when he doesn't",
-        'default_enabled': False,
-        'default_notify': False
-    },
     'businessnews': {
         'name': "Business News",
         'site': "http://www.businessnews.com.lb/",
