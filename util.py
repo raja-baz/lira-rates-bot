@@ -3,6 +3,7 @@
 import json
 import datetime
 import os
+import random
 
 meta = {
     "lirarate": {
@@ -28,6 +29,23 @@ meta = {
         'default_notify': False
     }
 }
+
+lelai_troll_data = [
+    "Calculating...",
+    "Everyone else +500",
+    "Filtering out manipulation...",
+    'Trying to "Just show results" to everyone...',
+    "Waiting for the dictator to pull rates out of his ass...",
+    "!warn stop making fun of me",
+    "!warn I don't like your face",
+    "!ban no questioning authority, we're revolutionaries who like dictatorships here!",
+    "Planting randomization seeds...",
+    "Gathering entropy...",
+    "Banning doubters from the internets...",
+    "Inflating my creator's ego...",
+    "Exploring the blockchain for rates data...",
+    "Sacrificing virgins at the altar of the dark Gods of rates...",
+]
 
 _config = None
 def get_global_config():
@@ -65,7 +83,7 @@ def escape(s, chars):
     return s
 
 def escape_markdown(s):
-    return escape(s, "().-+")
+    return escape(s, "!().-+")
 
 def render_single(source, highlight=False):
     info = json.load(open('rates_out/' + source))
@@ -92,10 +110,18 @@ def render_single(source, highlight=False):
     
     return text
 
+def render_lelai():
+    text = "LELAI: _%s_\n"  % lelai_troll_data[random.randint(0, len(lelai_troll_data)-1)]
+    text += "Source: https://lelai-abdellatif.online/"
+
+    return escape_markdown(text)
+
 def render_rates(chat_id, changed=[]):
     text = ""
     c = get_config(chat_id)
     for source in sorted(os.listdir('rates_out')):
+        if source not in meta:
+            continue
         show = c[source]['sub'] if source in c else meta[source]['default_enabled']
         if not show:
             continue
@@ -103,6 +129,8 @@ def render_rates(chat_id, changed=[]):
             text += "\n"
         text += render_single(source, source in changed)
 
+
+    text += "\n%s" % render_lelai()
     return text
 
 def read_channels():
