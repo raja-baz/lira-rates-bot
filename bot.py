@@ -7,7 +7,7 @@ import json
 import base64
 
 import logging
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.ERROR,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 from util import render_rates, get_token, read_channels, get_global_config, meta, set_config
