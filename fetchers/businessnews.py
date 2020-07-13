@@ -10,7 +10,7 @@ def parse_range(r):
         r = r[r.index("-")+1:]
     return r
 
-page=requests.get('http://www.businessnews.com.lb/asp/MarketUSDLL740.asp')
+page=requests.get('http://www.businessnews.com.lb/asp/MarketUSDLL740.asp', timeout=10)
 tree = html.fromstring(page.content)
 
 date_spans = [x.text for x in tree.xpath('//table')[1].xpath('//span')]
