@@ -45,6 +45,7 @@ lelai_troll_data = [
     "Inflating my creator's ego...",
     "Exploring the blockchain for rates data...",
     "Sacrificing virgins at the altar of the dark Gods of rates...",
+    "Not reporting a rate... On Purpose! Take that manipulators, LELAI has detected your silly games!"
 ]
 
 _config = None
