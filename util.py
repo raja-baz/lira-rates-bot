@@ -45,7 +45,9 @@ lelai_troll_data = [
     "Inflating my creator's ego...",
     "Exploring the blockchain for rates data...",
     "Sacrificing virgins at the altar of the dark Gods of rates...",
-    "Not reporting a rate... On Purpose! Take that manipulators, LELAI has detected your silly games!"
+    "Not reporting a rate... On Purpose! Take that manipulators, LELAI has detected your silly games!",
+    "!warn no speculation unless it's speculation I like",
+    "Beware the politically involved administrator of the money laundering, fraud and other illegal activities Telegram group that keeps force-adding CORE members against their will. #staysafe #beware #caution #lebaneselira #marketmanipulation #currencycrisis #devaluation #speculation #lebanon #lebanese #beirut #lbp #usd #usdollar #dollar #lebanesepound"
 ]
 
 _config = None
@@ -84,7 +86,7 @@ def escape(s, chars):
     return s
 
 def escape_markdown(s):
-    return escape(s, "!().-+")
+    return escape(s, "#!().-+")
 
 def render_single(source, highlight=False):
     info = json.load(open('rates_out/' + source))
