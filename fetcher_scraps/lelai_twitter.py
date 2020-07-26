@@ -10,7 +10,7 @@ time.tzset()
 from twitter_scraper import get_tweets
 
 def get_number(line):
-    pass
+    return int(line.split(":")[-1].strip().replace(",",""))
 
 def parse_tweet(tweet):
     text = tweet['text'].lower()
@@ -21,11 +21,12 @@ def parse_tweet(tweet):
             sell = get_number(line)
         elif "lelai max" in line:
             buy = get_number(line)
+
     if buy is None or sell is None:
         return None
     return buy,sell,tweet['time']
 
-tweets = get_tweets("lirawatch", pages=10)
+tweets = get_tweets("lirawatch", pages=2)
 latest = None
 previous = None
 for t in tweets:
@@ -45,5 +46,10 @@ br, sr, t = latest
 result = {'buy': br, 'sell': sr, 'time': t.strftime("%m/%d/%Y, %H:%M:%S")}
 
 if previous is not None:
-    
+    pbr, psr, pt = previous
+    result['db'] = br - pbr
+    result['ds'] = sr - psr
+    result['dts'] = int((t - pt).total_seconds())
+
+print(json.dumps(result))
 
