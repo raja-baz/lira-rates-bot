@@ -47,7 +47,8 @@ lelai_troll_data = [
     "Sacrificing virgins at the altar of the dark Gods of rates...",
     "Not reporting a rate... On Purpose! Take that manipulators, LELAI has detected your silly games!",
     "!warn no speculation unless it's speculation I like",
-    "Beware the politically involved administrator of the money laundering, fraud and other illegal activities Telegram group that keeps force-adding CORE members against their will. #staysafe #beware #caution #lebaneselira #marketmanipulation #currencycrisis #devaluation #speculation #lebanon #lebanese #beirut #lbp #usd #usdollar #dollar #lebanesepound"
+    "Beware the politically involved administrator of the money laundering, fraud and other illegal activities Telegram group that keeps force-adding CORE members against their will. #staysafe #beware #caution #lebaneselira #marketmanipulation #currencycrisis #devaluation #speculation #lebanon #lebanese #beirut #lbp #usd #usdollar #dollar #lebanesepound",
+    "World War Three has just started. This might have a negative impact on sentiment."
 ]
 
 _config = None
