@@ -31,7 +31,6 @@ meta = {
 }
 
 lelai_troll_data = [
-    "Calculating...",
     "Everyone else +500",
     "Filtering out manipulation...",
     'Trying to "Just show results" to everyone...',
@@ -39,8 +38,6 @@ lelai_troll_data = [
     "!warn stop making fun of me",
     "!warn I don't like your face",
     "!ban no questioning authority, we're revolutionaries who like dictatorships here!",
-    "Planting randomization seeds...",
-    "Gathering entropy...",
     "Banning doubters from the internets...",
     "Inflating my creator's ego...",
     "Exploring the blockchain for rates data...",
