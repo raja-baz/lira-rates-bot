@@ -1,7 +1,5 @@
 import sys
 
-import tempfile
-import os
 import copy
 import json
 import base64
@@ -10,7 +8,7 @@ import logging
 logging.basicConfig(level=logging.ERROR,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-from util import render_rates, get_token, read_channels, get_global_config, meta, set_config
+from util import render_rates, get_token, read_channels, get_global_config, meta, set_config, atomic_write
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -55,15 +53,6 @@ def list_subscribers(update, context):
 
     if len(text) > 0:
         update.message.reply_text(text)
-
-def atomic_write(file_name, data):
-    _, tmpFile = tempfile.mkstemp()
-    f = open(tmpFile, 'w')
-    f.write(data)
-    f.flush()
-    os.fsync(f.fileno())
-    f.close()
-    os.rename(tmpFile, file_name)
     
 
 def write_channels(channels):
@@ -150,7 +139,6 @@ def configure_next_source(chat_id, text_func, so_far):
     
     text_func("Done! Summary:\n\n%s" % summary)
     set_config(chat_id, so_far)
-    atomic_write('config', json.dumps(global_config))
     _subscribe(chat_id)
     
 

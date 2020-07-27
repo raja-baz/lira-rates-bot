@@ -4,6 +4,9 @@ import json
 import datetime
 import os
 import random
+import tempfile
+
+CONFIG_FILE_NAME = 'config'
 
 meta = {
     "lirarate": {
@@ -48,22 +51,63 @@ lelai_troll_data = [
     "World War Three has just started. This might have a negative impact on sentiment."
 ]
 
+
+TROLL_CONFIG_KEY = "__troll__"
+
+
+def atomic_write(file_name, data):
+    _, tmpFile = tempfile.mkstemp()
+    f = open(tmpFile, 'w')
+    f.write(data)
+    f.flush()
+    os.fsync(f.fileno())
+    f.close()
+    os.rename(tmpFile, file_name)
+
 _config = None
 def get_global_config():
     global _config
     if _config is None:
         try:
-            _config = json.load(open('config'))
+            _config = json.load(open(CONFIG_FILE_NAME))
         except FileNotFoundError:
             _config = {}
+
+        if TROLL_CONFIG_KEY not in _config:
+            _config[TROLL_CONFIG_KEY] = {}
     return _config
+
+def save_config():
+    atomic_write(CONFIG_FILE_NAME, json.dumps(_config))
 
 def set_config(chat_id, config):
     get_global_config()[str(chat_id)] = config
+    save_config()
 
 def get_config(chat_id):
     config = get_global_config()
     return config[str(chat_id)] if str(chat_id) in config else {}
+
+def get_usable_troll_phrases(chat_id):
+    config = get_global_config()
+    all_used = config[TROLL_CONFIG_KEY]
+    used = set(all_used[chat_id]) if chat_id in all_used else set()
+    available = list(set(lelai_troll_data) - used)
+    if len(available) == 0:
+        # all used, reset
+        print("resetting troll phrases for:", chat_id)
+        del all_used[chat_id]
+        save_config()
+        available = lelai_troll_data
+    return available
+
+def mark_troll_phrase_used(chat_id, phrase):
+    config = get_global_config()
+    all_used = config[TROLL_CONFIG_KEY]
+    if chat_id not in all_used:
+        all_used[chat_id] = []
+    all_used[chat_id].append(phrase)
+    save_config()
 
 def get_token():
     try:
@@ -111,8 +155,12 @@ def render_single(source, highlight=False):
     
     return text
 
-def render_lelai():
-    text = "LELAI: _%s_\n"  % lelai_troll_data[random.randint(0, len(lelai_troll_data)-1)]
+def render_lelai(chat_id):
+    chat_id = str(chat_id)
+    usable = get_usable_troll_phrases(chat_id)
+    phrase = usable[random.randint(0, len(usable)-1)]
+    mark_troll_phrase_used(chat_id, phrase)
+    text = "LELAI: _%s_\n"  % phrase
     text += "Source: https://lelai-abdellatif.online/"
 
     return escape_markdown(text)
@@ -131,7 +179,7 @@ def render_rates(chat_id, changed=[]):
         text += render_single(source, source in changed)
 
 
-    text += "\n%s" % render_lelai()
+    text += "\n%s" % render_lelai(chat_id)
     return text
 
 def read_channels():
