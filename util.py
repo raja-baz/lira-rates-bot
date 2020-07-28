@@ -64,25 +64,23 @@ def atomic_write(file_name, data):
     f.close()
     os.rename(tmpFile, file_name)
 
-_config = None
 def get_global_config():
-    global _config
-    if _config is None:
-        try:
-            _config = json.load(open(CONFIG_FILE_NAME))
-        except FileNotFoundError:
-            _config = {}
+    try:
+        config = json.load(open(CONFIG_FILE_NAME))
+    except FileNotFoundError:
+        config = {}
 
-        if TROLL_CONFIG_KEY not in _config:
-            _config[TROLL_CONFIG_KEY] = {}
-    return _config
+    if TROLL_CONFIG_KEY not in config:
+        config[TROLL_CONFIG_KEY] = {}
+    return config
 
-def save_config():
-    atomic_write(CONFIG_FILE_NAME, json.dumps(_config))
+def save_config(config):
+    atomic_write(CONFIG_FILE_NAME, json.dumps(config))
 
 def set_config(chat_id, config):
-    get_global_config()[str(chat_id)] = config
-    save_config()
+    conf = get_global_config()
+    conf[str(chat_id)] = config
+    save_config(conf)
 
 def get_config(chat_id):
     config = get_global_config()
@@ -97,7 +95,7 @@ def get_usable_troll_phrases(chat_id):
         # all used, reset
         print("resetting troll phrases for:", chat_id)
         del all_used[chat_id]
-        save_config()
+        save_config(config)
         available = lelai_troll_data
     return available
 
@@ -107,7 +105,7 @@ def mark_troll_phrase_used(chat_id, phrase):
     if chat_id not in all_used:
         all_used[chat_id] = []
     all_used[chat_id].append(phrase)
-    save_config()
+    save_config(config)
 
 def get_token():
     try:

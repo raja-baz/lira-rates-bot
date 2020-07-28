@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(level=logging.ERROR,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-from util import render_rates, get_token, read_channels, get_global_config, meta, set_config, atomic_write
+from util import render_rates, get_token, read_channels, meta, set_config, atomic_write
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -17,7 +17,6 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 import datetime
 
 last_rates_times = {}
-global_config = get_global_config()
 
 def get_chat_info(bot, chat_id):
     chat = bot.getChat(chat_id)
