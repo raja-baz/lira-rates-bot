@@ -4,7 +4,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-from util import render_rates, get_token, read_channels, get_config, meta
+from util import render_rates, get_token, read_channels, get_config, meta, mark_latest_message
 
 import telegram
 
@@ -29,6 +29,7 @@ for channel_id in read_channels():
         continue
     text = "*Rates updated*:\n\n" + render_rates(channel_id, changed)
     try:
-        bot.send_message(channel_id, text, disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        message = bot.send_message(channel_id, text, disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        mark_latest_message(bot, message)
     except:
         pass

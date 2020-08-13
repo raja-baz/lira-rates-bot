@@ -180,6 +180,17 @@ def render_rates(chat_id, changed=[]):
     text += "\n%s" % render_lelai(chat_id)
     return text
 
+def mark_latest_message(bot, message):
+    if message.chat.type == "private":
+        return
+    
+    config = get_config(message.chat_id)
+    if "__prev__" in config:
+        bot.delete_message(chat_id=message.chat_id, message_id=config['__prev__'])
+    config['__prev__'] = message.message_id
+    set_config(message.chat_id, config)
+    
+
 def read_channels():
     try:
         return [int(x.strip()) for x in open('channels').readlines()]

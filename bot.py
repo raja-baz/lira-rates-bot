@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(level=logging.ERROR,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-from util import render_rates, get_token, read_channels, meta, set_config, atomic_write
+from util import render_rates, get_token, read_channels, meta, set_config, atomic_write, mark_latest_message
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -235,7 +235,8 @@ def start(update, context):
 def print_rates(update, context):
     if rate_limit(update.effective_chat):
         return
-    update.message.reply_text("*Latest rates*:\n\n" + render_rates(update.effective_chat.id), disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    message = update.message.reply_text("*Latest rates*:\n\n" + render_rates(update.effective_chat.id), disable_web_page_preview=True, parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    mark_latest_message(context.bot, message)
 
 TOKEN = get_token()
 
