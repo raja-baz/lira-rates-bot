@@ -186,7 +186,10 @@ def mark_latest_message(bot, message):
     
     config = get_config(message.chat_id)
     if "__prev__" in config:
-        bot.delete_message(chat_id=message.chat_id, message_id=config['__prev__'])
+        try:
+            bot.delete_message(chat_id=message.chat_id, message_id=config['__prev__'])
+        except:
+            print("Tried to delete a message but didn't find it. Weirdness")
     config['__prev__'] = message.message_id
     set_config(message.chat_id, config)
     
