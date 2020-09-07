@@ -8,13 +8,13 @@ import requests
 def parse_record(record):
     return (int(record['buy']), int(record['sell']), record['updated_at'], dateparser.parse(record['updated_at']))
 
-history = requests.get("https://lebanese-pound-to-usd-price.com/dollar/api/history-1-today", timeout=10)
+history = requests.get("https://lbpapp.com/api/history-1-today", timeout=10)
 data = history.json()
 
 lrecord = parse_record(data[-1])
 precord = parse_record(data[-2])
 
-current = requests.get("https://lebanese-pound-to-usd-price.com/dollar/api/dollar-lebanon", timeout=10).json()
+current = requests.get("https://lbpapp.com/api/usd_dollar-lebanon", timeout=10).json()
 
 latest = None
 for record in current['data']:
