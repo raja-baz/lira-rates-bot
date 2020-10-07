@@ -166,7 +166,9 @@ def render_lelai(chat_id):
 def render_rates(chat_id, changed=[]):
     text = ""
     c = get_config(chat_id)
-    for source in sorted(os.listdir('rates_out')):
+    all_sources = os.listdir('rates_out')
+    unchanged = list(sorted(set(all_sources) - set(changed)))
+    for source in list(sorted(changed)) + unchanged:
         if source not in meta:
             continue
         show = c[source]['sub'] if source in c else meta[source]['default_enabled']
