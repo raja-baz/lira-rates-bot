@@ -175,9 +175,7 @@ def render_rates(chat_id, changed=[]):
         if len(text) > 0:
             text += "\n"
         text += render_single(source, source in changed)
-
-
-    text += "\n%s" % render_lelai(chat_id)
+        
     return text
 
 def mark_latest_message(bot, message):
