@@ -3,6 +3,7 @@ import sys
 import copy
 import json
 import base64
+import os
 
 import logging
 logging.basicConfig(level=logging.ERROR,
@@ -255,6 +256,12 @@ dp.add_handler(CommandHandler('subscribers', list_subscribers))
 dp.add_handler(CommandHandler('config', configure))
 dp.add_handler(CallbackQueryHandler(configure_options))
 dp.add_handler(CommandHandler('start', start))
+
+def exit(context):
+    print("exiting bot for restart timer")
+    os._exit(5)
+
+dp.job_queue.run_once(exit, datetime.timedelta(hours=6))
 
 updater.start_polling()
 updater.idle()
