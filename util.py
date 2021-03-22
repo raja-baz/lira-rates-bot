@@ -24,9 +24,9 @@ meta = {
         'default_notify': True
     },
     'dollarmarket': {
-        'name': 'Dollar Market',
-        'site': 'https://play.google.com/store/apps/details?id=com.usdmarketapp&hl=ar',
-        'site_text': 'سوق الدولار mobile app',
+        'name': 'Ade l dollar',
+        'site': 'https://play.google.com/store/apps/details?id=com.dollarade.ade',
+        'site_text': 'ادي الدولار mobile app',
         'desc': 'Updates frequently. Sometimes 5+ times daily',
         'default_enabled': True,
         'default_notify': False
