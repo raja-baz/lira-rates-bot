@@ -11,7 +11,7 @@ CONFIG_FILE_NAME = 'config'
 meta = {
     "lirarate": {
         "name": "Lira Rate",
-        "site": "https://lirarate.com",
+        "site": "https://lirarate.org",
         'desc': 'Updates one or two times a day',
         'default_enabled': True,
         'default_notify': True
