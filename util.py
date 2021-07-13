@@ -16,13 +16,6 @@ meta = {
         'default_enabled': True,
         'default_notify': True
     },
-    'businessnews': {
-        'name': "Business News",
-        'site': "http://www.businessnews.com.lb/",
-        'desc': 'Updates once daily, around midday',
-        'default_enabled': True,
-        'default_notify': True
-    },
     'dollarmarket': {
         'name': 'Ade l dollar',
         'site': 'https://play.google.com/store/apps/details?id=com.dollarade.ade',
