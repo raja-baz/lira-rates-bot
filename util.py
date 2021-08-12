@@ -23,6 +23,14 @@ meta = {
         'desc': 'Updates frequently. Sometimes 5+ times daily',
         'default_enabled': True,
         'default_notify': False
+    },
+    'sarraf': {
+        'name': 'Sarraf Lebanon',
+        'site': 'https://play.google.com/store/apps/details?id=com.alilea',
+        'site_text': 'Sarraf Lebanon mobile app',
+        'desc': 'Updates frequently. Sometimes 5+ times daily',
+        'default_enabled': True,
+        'default_notify': False
     }
 }
 
