@@ -4,9 +4,15 @@
 import json
 import dateparser
 import requests
+import pytz
 
 def parse_record(record):
-    return (int(record['buy']), int(record['sell']), record['updated_at'], dateparser.parse(record['updated_at']))
+    return (int(record['buy']), int(record['sell']), record['updated_at'], fix_timezone(dateparser.parse(record['updated_at'])))
+
+def fix_timezone(dt):
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=pytz.timezone('EET'))
+    return dt
 
 history = requests.get("https://adeldollar.xyz/api/history-1-today", timeout=10)
 data = history.json()
@@ -31,6 +37,8 @@ if latest is not None:
 
 sr, br, t, ts = lrecord
 psr, pbr, pt, pts = precord
+
+print(ts, pts)
 
 print(json.dumps({'buy': br, 'sell': sr, 'time': t,
                   'db': br - pbr, 'ds': sr - psr, 'dts': int((ts - pts).total_seconds())}))
