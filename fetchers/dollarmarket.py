@@ -38,8 +38,6 @@ if latest is not None:
 sr, br, t, ts = lrecord
 psr, pbr, pt, pts = precord
 
-print(ts, pts)
-
 print(json.dumps({'buy': br, 'sell': sr, 'time': t,
                   'db': br - pbr, 'ds': sr - psr, 'dts': int((ts - pts).total_seconds())}))
 
