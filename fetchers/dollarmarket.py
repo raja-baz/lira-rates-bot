@@ -14,13 +14,13 @@ def fix_timezone(dt):
         return dt.replace(tzinfo=pytz.timezone('EET'))
     return dt
 
-history = requests.get("https://adeldollar.xyz/api/history-1-today", timeout=10)
+history = requests.get("https://adeldollar.xyz/api/aa_history-1-today", timeout=10, headers={"mtoken":"mtoken@690acdbhkdj65h"})
 data = history.json()
 
 lrecord = parse_record(data[-1])
 precord = parse_record(data[-2])
 
-current = requests.get("https://adeldollar.xyz/api/usd_dollar-lebanon", timeout=10).json()
+current = requests.get("https://adeldollar.xyz/api/aa_usd_dollar-lebanon", timeout=10, headers={"mtoken":"mtoken@690acdbhkdj65h"}).json()
 
 latest = None
 for record in current['data']:
