@@ -7,36 +7,38 @@ import requests
 import pytz
 
 def parse_record(record):
-    return (int(record['buy']), int(record['sell']), record['updated_at'], fix_timezone(dateparser.parse(record['updated_at'])))
+    t = dateparser.parse(record['createdAt']).astimezone(pytz.timezone('EET'))
+    return (int(record['marketBuy']), int(record['marketSell']), t.ctime(), t)
 
-def fix_timezone(dt):
-    if dt.tzinfo is None:
-        return dt.replace(tzinfo=pytz.timezone('EET'))
-    return dt
+def parse_history(record, spread):
+    v = int(record['value'])
+    t = dateparser.parse(record['createdAt']).astimezone(pytz.timezone('EET'))
+    return (v - spread, v, t.ctime(), t)
 
-history = requests.get("https://adeldollar.xyz/api/aa_history-1-today", timeout=10, headers={"mtoken":"mtoken@690acdbhkdj65h"})
+headers = {
+    "user-agent": "Dalvik/2.1.0 (Linux; U; Android 8.0.0; HTC Desire HD A9191 Build/GRJ90)",
+    "host": "lbpusd.herokuapp.com",
+}
+
+token = requests.post("https://lbpusd.herokuapp.com/api/auth/user/login", json={"secret": "8zFr2igPSJVBLBKKlZ4ddeD93JhgMo"}).json()["token"]
+
+headers["mtoken"] = "mtoken@690acdbhkdj65h"
+headers["authorization"] = "Bearer " + token
+
+current = parse_record(requests.get("https://lbpusd.herokuapp.com/api/LBP/latest", timeout=10, headers=headers).json())
+spread = current[1] - current[0]
+history = requests.get("https://lbpusd.herokuapp.com/api/currencies/historical/LBP", timeout=10, headers=headers)
 data = history.json()
 
-lrecord = parse_record(data[-1])
-precord = parse_record(data[-2])
+lrecord = parse_history(data['rates'][-1], spread)
+precord = parse_history(data['rates'][-2], spread)
 
-current = requests.get("https://adeldollar.xyz/api/aa_usd_dollar-lebanon", timeout=10, headers={"mtoken":"mtoken@690acdbhkdj65h"}).json()
+history_record = lrecord
+if abs((current[3] - lrecord[3]).total_seconds()) < 10:
+    history_record = precord
 
-latest = None
-for record in current['data']:
-    if record['id'] == 1:
-        latest = record
-        break
-
-if latest is not None:
-    current = parse_record(latest)
-    if current != lrecord:
-        precord = lrecord
-        lrecord = current
-
-
-sr, br, t, ts = lrecord
-psr, pbr, pt, pts = precord
+sr, br, t, ts = current
+psr, pbr, pt, pts = history_record
 
 print(json.dumps({'buy': br, 'sell': sr, 'time': t,
                   'db': br - pbr, 'ds': sr - psr, 'dts': int((ts - pts).total_seconds())}))
