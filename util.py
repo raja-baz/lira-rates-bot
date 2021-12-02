@@ -31,6 +31,14 @@ meta = {
         'desc': 'Updates frequently. Sometimes 5+ times daily',
         'default_enabled': True,
         'default_notify': False
+    },
+    'omt' : {
+        'name': "OMT",
+        "site": "https://www.omt.com.lb/en",
+        "site_text": "OMT website",
+        "desc": "OMT 'official' rate",
+        "default_enabled": True,
+        "default_notify": False
     }
 }
 
