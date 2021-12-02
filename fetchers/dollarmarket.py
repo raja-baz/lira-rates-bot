@@ -17,17 +17,17 @@ def parse_history(record, spread):
 
 headers = {
     "user-agent": "Dalvik/2.1.0 (Linux; U; Android 8.0.0; HTC Desire HD A9191 Build/GRJ90)",
-    "host": "lbpusd.herokuapp.com",
+    "host": "cur-now.herokuapp.com",
 }
 
-token = requests.post("https://lbpusd.herokuapp.com/api/auth/user/login", json={"secret": "8zFr2igPSJVBLBKKlZ4ddeD93JhgMo"}).json()["token"]
+token = requests.post("https://cur-now.herokuapp.com/api/auth/user/login", json={"secret": "Zhy6nzsmUOydMzHWKrayRGlRyV_333"}).json()["token"]
 
 headers["mtoken"] = "mtoken@690acdbhkdj65h"
 headers["authorization"] = "Bearer " + token
 
-current = parse_record(requests.get("https://lbpusd.herokuapp.com/api/LBP/latest", timeout=10, headers=headers).json())
+current = parse_record(requests.get("https://cur-now.herokuapp.com/api/LBP/latest", timeout=10, headers=headers).json())
 spread = current[1] - current[0]
-history = requests.get("https://lbpusd.herokuapp.com/api/currencies/historical/LBP", timeout=10, headers=headers)
+history = requests.get("https://cur-now.herokuapp.com/api/currencies/historical/LBP", timeout=10, headers=headers)
 data = history.json()
 
 lrecord = parse_history(data['rates'][-1], spread)
