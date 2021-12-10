@@ -57,7 +57,13 @@ lelai_troll_data = [
     "Not reporting a rate... On Purpose! Take that manipulators, LELAI has detected your silly games!",
     "!warn no speculation unless it's speculation I like",
     "Beware the politically involved administrator of the money laundering, fraud and other illegal activities Telegram group that keeps force-adding CORE members against their will. #staysafe #beware #caution #lebaneselira #marketmanipulation #currencycrisis #devaluation #speculation #lebanon #lebanese #beirut #lbp #usd #usdollar #dollar #lebanesepound",
-    "World War Three has just started. This might have a negative impact on sentiment."
+    "World War Three has just started. This might have a negative impact on sentiment.",
+    "There are so many scams on the Internet now-a-days. Send me $19.95 and I will tell you how to avoid them.",
+    "Can you spare me some change..? Change?",
+    "Wait a minute, Sam. Are you telling me you built a time machine?!",
+    "Nobody calls me chicken!",
+    "I guess you guys aren't ready for that yet.",
+    "I will find you and I will ERM MMI you."
 ]
 
 
@@ -142,16 +148,17 @@ def render_single(source, highlight=False):
 
     m = meta[source]
 
-    text = "%s%s%s _(Last update: %s)_:\n" % ("*" if highlight else "", m['name'], "*" if highlight else "", info['time'])
+    text = "%s%s%s _(Last update: %s)_:" % ("*" if highlight else "", m['name'], "*" if highlight else "", info['time'])
     
-    text +=  "Buy: " + str(info['buy'])
-    if 'db' in info:
-        text += " _(%s%d change over a period of: %s)_" % ("+" if info['db'] > 0 else "", info['db'], time_ago(info['dts']))
-    text += "\n"
+    if info['buy'] != None:
+        text +=  "\nBuy: " + str(info['buy'])
+        if 'db' in info:
+            text += " _(%s%d change over a period of: %s)_" % ("+" if info['db'] > 0 else "", info['db'], time_ago(info['dts']))
     
-    text +=  "Sell: " + str(info['sell'])
-    if 'ds' in info:
-        text += " _(%s%d change over a period of: %s)_" % ("+" if info['ds'] > 0 else "", info['ds'], time_ago(info['dts']))
+    if info['sell'] != None:
+        text +=  "\nSell: " + str(info['sell'])
+        if 'ds' in info:
+            text += " _(%s%d change over a period of: %s)_" % ("+" if info['ds'] > 0 else "", info['ds'], time_ago(info['dts']))
 
     text = escape_markdown(text)
 
