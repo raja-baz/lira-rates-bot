@@ -15,23 +15,25 @@ def parse_history(record, spread):
     t = dateparser.parse(record['createdAt']).astimezone(pytz.timezone('EET'))
     return (v - spread, v, t.ctime(), t)
 
+host="www.lbpprice.com"
+
 headers = {
     "user-agent": "Dalvik/2.1.0 (Linux; U; Android 8.0.0; HTC Desire HD A9191 Build/GRJ90)",
-    "host": "cur-now.herokuapp.com",
+    "host": host,
 }
 
-token = requests.post("https://cur-now.herokuapp.com/api/auth/user/login", json={"secret": "Zhy6nzsmUOydMzHWKrayRGlRyV_333"}).json()["token"]
+token = requests.post("https://" + host + "/api/auth/user/login", json={"secret": "Zhy6nzsmUOydMzHWKrayRGlRyV_333"}).json()["token"]
 
-headers["mtoken"] = "mtoken@690acdbhkdj65h"
+headers["mtoken"] = "8"
 headers["authorization"] = "Bearer " + token
 
-current = parse_record(requests.get("https://cur-now.herokuapp.com/api/LBP/latest", timeout=10, headers=headers).json())
+current = parse_record(requests.get("https://" + host + "/api/LBP/latest", timeout=10, headers=headers).json())
 spread = current[1] - current[0]
-history = requests.get("https://cur-now.herokuapp.com/api/currencies/historical/LBP", timeout=10, headers=headers)
+history = requests.get("https://" + host + "/api/currencies/v2/historical/LBP", timeout=10, headers=headers)
 data = history.json()
 
-lrecord = parse_history(data['rates'][-1], spread)
-precord = parse_history(data['rates'][-2], spread)
+lrecord = parse_history(data[0], spread)
+precord = parse_history(data[1], spread)
 
 history_record = lrecord
 if abs((current[3] - lrecord[3]).total_seconds()) < 10:
