@@ -10,30 +10,26 @@ def parse_record(record):
     t = dateparser.parse(record['createdAt']).astimezone(pytz.timezone('EET'))
     return (int(record['marketBuy']), int(record['marketSell']), t.ctime(), t)
 
-def parse_history(record, spread):
-    v = int(record['value'])
-    t = dateparser.parse(record['createdAt']).astimezone(pytz.timezone('EET'))
-    return (v - spread, v, t.ctime(), t)
-
-host="www.lbpprice.com"
+host="www.lbpprice.info"
 
 headers = {
-    "user-agent": "Dalvik/2.1.0 (Linux; U; Android 8.0.0; HTC Desire HD A9191 Build/GRJ90)",
+    "user-agent": "okhttp/5.0.0-alpha.1",
     "host": host,
+    "authorization": "JSXIUQFFnkfZ0Wdsa2332ESWjrebvVYeapjGU"
 }
 
-token = requests.post("https://" + host + "/api/auth/user/login", json={"secret": "Zhy6nzsmUOydMzHWKrayRGlRyV_333"}).json()["token"]
+token = requests.post("https://" + host + "/api/v1/auth/login", headers = headers).json()["successResult"]["session"]
 
 headers["mtoken"] = "8"
-headers["authorization"] = "Bearer " + token
+headers["authorization"] = token
 
-current = parse_record(requests.get("https://" + host + "/api/LBP/latest", timeout=10, headers=headers).json())
+current = parse_record(requests.get("https://" + host + "/api/v1/lebanese_lira/latest", timeout=10, headers=headers).json()["successResult"])
 spread = current[1] - current[0]
-history = requests.get("https://" + host + "/api/currencies/v2/historical/LBP", timeout=10, headers=headers)
-data = history.json()
+history = requests.get("https://" + host + "/api/v1/lebanese_lira/chart", params={"from": "2022-12-31", "to": "2023-12-31"}, timeout=10, headers=headers)
+data = history.json()["successResult"]
 
-lrecord = parse_history(data[0], spread)
-precord = parse_history(data[1], spread)
+lrecord = parse_record(data[0])
+precord = parse_record(data[1])
 
 history_record = lrecord
 if abs((current[3] - lrecord[3]).total_seconds()) < 10:
