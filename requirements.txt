@@ -1,5 +1,5 @@
 python_telegram_bot==12.7
 dateparser==0.7.6
-requests==2.24.0
+requests==2.31.0
 twitter_scraper==0.4.2
 beautifulsoup4==4.9.3
